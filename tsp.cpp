@@ -1,32 +1,33 @@
-#include <bits/stdc++.h> 
-using namespace std; 
-#define V 4 
-int travllingSalesmanProblem(int graph[][V], int s) 
-{ 
-    vector<int> vertex; 
-    for (int i = 0; i < V; i++) 
-        if (i != s) 
-            vertex.push_back(i); 
-    int min_path = INT_MAX; 
-    do { 
-        int current_pathweight = 0; 
-        int k = s; 
-        for (int i = 0; i < vertex.size(); i++) { 
-            current_pathweight += graph[k][vertex[i]]; 
-            k = vertex[i]; 
-        } 
-        current_pathweight += graph[k][s]; 
-        min_path = min(min_path, current_pathweight); 
-    } while (next_permutation(vertex.begin(), vertex.end())); 
-    return min_path; 
-} 
-int main() 
-{ 
-    int graph[][V] = { { 0, 10, 15, 20 }, 
-                       { 10, 0, 35, 25 }, 
-                       { 15, 35, 0, 30 }, 
-                       { 20, 25, 30, 0 } }; 
-    int s = 0; 
-    cout << travllingSalesmanProblem(graph, s) << endl; 
-    return 0; 
-} 
+#include<bits/stdc++.h>
+using namespace std;
+int n;
+int g[1000][1000],dist[1000],visited[1000];
+// vector<int> v;
+int TSP(int s){
+    visited[s]=1;
+    int f,k;
+    for(int i=1;i<n;i++){
+        if(s!=i&&!visited[i]){
+            f=g[i][s]+TSP(i);
+            if(dist[s]>f){
+                dist[s]=f;
+                // k=i;
+            }
+        }
+    }
+    // v.push_back(k);
+    visited[s]=0;
+    if(dist[s]==INT_MAX)return g[0][s];
+    return dist[s];
+}
+int main(){
+    cin>>n;
+    for(int i=0;i<n;i++)dist[i]=INT_MAX;
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++)cin>>g[i][j];
+    }
+    cout<<TSP(0)<<endl;
+    // cout<<"0->";
+    // for(int i=0;i<n;i++)cout<<v[i]<<"->";
+    for(int i=0;i<n;i++)cout<<dist[i]<<" ";
+}
